@@ -159,6 +159,128 @@ tenmin_test_timeseries_file_version_4 = textwrap.dedent("""\
             2008-02-07 13:10,12.3,\r
             """)
 
+tenmin_test_timeseries_file_no_altitude = textwrap.dedent("""\
+            Unit=°C\r
+            Count=22\r
+            Title=A test 10-min time series\r
+            Comment=This timeseries is extremely important\r
+            Comment=because the comment that describes it\r
+            Comment=spans five lines.\r
+            Comment=\r
+            Comment=These five lines form two paragraphs.\r
+            Timezone=EET (UTC+0200)\r
+            Time_step=10,0\r
+            Timestamp_rounding=0,0\r
+            Timestamp_offset=0,0\r
+            Variable=temperature\r
+            Precision=1\r
+            Location=24.678900 38.123450 4326\r
+            \r
+            2008-02-07 09:40,10.3,\r
+            2008-02-07 09:50,10.4,\r
+            2008-02-07 10:00,10.5,\r
+            2008-02-07 10:10,10.5,\r
+            2008-02-07 10:20,10.7,\r
+            2008-02-07 10:30,11.0,\r
+            2008-02-07 10:40,10.9,\r
+            2008-02-07 10:50,11.1,\r
+            2008-02-07 11:00,11.2,\r
+            2008-02-07 11:10,11.4,\r
+            2008-02-07 11:20,11.4,\r
+            2008-02-07 11:30,11.4,MISS\r
+            2008-02-07 11:40,11.5,\r
+            2008-02-07 11:50,11.7,\r
+            2008-02-07 12:00,11.8,\r
+            2008-02-07 12:10,11.9,\r
+            2008-02-07 12:20,12.2,\r
+            2008-02-07 12:30,12.2,\r
+            2008-02-07 12:40,12.2,\r
+            2008-02-07 12:50,12.1,\r
+            2008-02-07 13:00,12.2,\r
+            2008-02-07 13:10,12.3,\r
+            """)
+
+tenmin_test_timeseries_file_no_location = textwrap.dedent("""\
+            Unit=°C\r
+            Count=22\r
+            Title=A test 10-min time series\r
+            Comment=This timeseries is extremely important\r
+            Comment=because the comment that describes it\r
+            Comment=spans five lines.\r
+            Comment=\r
+            Comment=These five lines form two paragraphs.\r
+            Timezone=EET (UTC+0200)\r
+            Time_step=10,0\r
+            Timestamp_rounding=0,0\r
+            Timestamp_offset=0,0\r
+            Variable=temperature\r
+            Precision=1\r
+            \r
+            2008-02-07 09:40,10.3,\r
+            2008-02-07 09:50,10.4,\r
+            2008-02-07 10:00,10.5,\r
+            2008-02-07 10:10,10.5,\r
+            2008-02-07 10:20,10.7,\r
+            2008-02-07 10:30,11.0,\r
+            2008-02-07 10:40,10.9,\r
+            2008-02-07 10:50,11.1,\r
+            2008-02-07 11:00,11.2,\r
+            2008-02-07 11:10,11.4,\r
+            2008-02-07 11:20,11.4,\r
+            2008-02-07 11:30,11.4,MISS\r
+            2008-02-07 11:40,11.5,\r
+            2008-02-07 11:50,11.7,\r
+            2008-02-07 12:00,11.8,\r
+            2008-02-07 12:10,11.9,\r
+            2008-02-07 12:20,12.2,\r
+            2008-02-07 12:30,12.2,\r
+            2008-02-07 12:40,12.2,\r
+            2008-02-07 12:50,12.1,\r
+            2008-02-07 13:00,12.2,\r
+            2008-02-07 13:10,12.3,\r
+            """)
+
+tenmin_test_timeseries_file_no_precision = textwrap.dedent("""\
+            Unit=°C\r
+            Count=22\r
+            Title=A test 10-min time series\r
+            Comment=This timeseries is extremely important\r
+            Comment=because the comment that describes it\r
+            Comment=spans five lines.\r
+            Comment=\r
+            Comment=These five lines form two paragraphs.\r
+            Timezone=EET (UTC+0200)\r
+            Time_step=10,0\r
+            Timestamp_rounding=0,0\r
+            Timestamp_offset=0,0\r
+            Variable=temperature\r
+            Location=24.678900 38.123450 4326\r
+            Altitude=219.22\r
+            \r
+            2008-02-07 09:40,10.320000,\r
+            2008-02-07 09:50,10.420000,\r
+            2008-02-07 10:00,10.510000,\r
+            2008-02-07 10:10,10.540000,\r
+            2008-02-07 10:20,10.710000,\r
+            2008-02-07 10:30,10.960000,\r
+            2008-02-07 10:40,10.930000,\r
+            2008-02-07 10:50,11.100000,\r
+            2008-02-07 11:00,11.230000,\r
+            2008-02-07 11:10,11.440000,\r
+            2008-02-07 11:20,11.410000,\r
+            2008-02-07 11:30,11.420000,MISS\r
+            2008-02-07 11:40,11.540000,\r
+            2008-02-07 11:50,11.680000,\r
+            2008-02-07 12:00,11.800000,\r
+            2008-02-07 12:10,11.910000,\r
+            2008-02-07 12:20,12.160000,\r
+            2008-02-07 12:30,12.160000,\r
+            2008-02-07 12:40,12.240000,\r
+            2008-02-07 12:50,12.130000,\r
+            2008-02-07 13:00,12.170000,\r
+            2008-02-07 13:10,12.310000,\r
+            """)
+
 
 class HtsTestCase(TestCase):
 
@@ -322,3 +444,52 @@ class HtsTestCase(TestCase):
         np.testing.assert_allclose(apd.values[:, 0].astype(float),
                                    expected[:, 0].astype(float))
         np.testing.assert_array_equal(apd.values[:, 1], expected[:, 1])
+
+    def test_no_location(self):
+        """Test that all works correctly whenever some items are missing from
+        location."""
+
+        # Try with altitude None
+        self.reference_ts.location['altitude'] = None
+        outstring = StringIO()
+        hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_no_altitude)
+
+        # Try without altitude at all
+        del self.reference_ts.location['altitude']
+        outstring = StringIO()
+        hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_no_altitude)
+
+        # Try with location None
+        self.reference_ts.location = None
+        outstring = StringIO()
+        hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_no_location)
+
+        # Try with no location at all
+        delattr(self.reference_ts, 'location')
+        outstring = StringIO()
+        hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_no_location)
+
+    def test_no_precision(self):
+        """Test that all works correclty whenever precision is missing."""
+
+        # Try with precision None
+        self.reference_ts.precision = None
+        outstring = StringIO()
+        hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_no_precision)
+
+        # Try with no precision at all
+        delattr(self.reference_ts, 'precision')
+        outstring = StringIO()
+        hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_no_precision)

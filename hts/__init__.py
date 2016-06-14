@@ -36,7 +36,7 @@ def write(df, f):
     if df.empty:
         return
     float_format = '%f'
-    if hasattr(df, 'precision'):
+    if hasattr(df, 'precision') and df.precision:
         float_format = '%.{}f'.format(df.precision)
     df.to_csv(f, float_format=float_format, header=False, mode='wb',
               line_terminator='\r\n', date_format='%Y-%m-%d %H:%M')
@@ -228,14 +228,15 @@ class _WriteFile:
                                             self.df.timestamp_offset))
 
     def write_location(self, parm):
-        if self.version <= 2 or not getattr(self.df, 'location', 'None'):
+        if self.version <= 2 or not getattr(self.df, 'location', None):
             return
         self.f.write('Location={:.6f} {:.6f} {}\r\n'.format(
             *[self.df.location[x] for x in ['abscissa', 'ordinate', 'srid']]))
 
     def write_altitude(self, parm):
-        if (self.version <= 2) or not getattr(self.df, 'location', 'None') or (
-                'altitude' not in self.df.location):
+        if (self.version <= 2) or not getattr(self.df, 'location', None) or (
+                'altitude' not in self.df.location) or (
+                not self.df.location['altitude']):
             return
         altitude = self.df.location['altitude']
         asrid = self.df.location['asrid'] if 'asrid' in self.df.location \
