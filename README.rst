@@ -1,10 +1,10 @@
-========================================================================
-hts - Read and write Pandas objects from/to Hydrognomon timeseries files
-========================================================================
+===========================================================================
+pd2hts - Read and write Pandas objects from/to Hydrognomon timeseries files
+===========================================================================
 
-.. image:: https://travis-ci.org/aptiko/hts.svg?branch=master
+.. image:: https://travis-ci.org/aptiko/pd2hts.svg?branch=master
     :alt: Build button
-    :target: https://travis-ci.org/aptiko/hts
+    :target: https://travis-ci.org/aptiko/pd2hts
 
 Requirements
 ============
@@ -14,7 +14,7 @@ Python 3, Pandas
 Reference
 =========
 
-``hts`` contains the following functions:
+``pd2hts`` contains the following functions:
 
 * ``read(f)`` reads filelike object ``f`` that contains a time series in
   text format, and returns a pandas DataFrame with date index, value,

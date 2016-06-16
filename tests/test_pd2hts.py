@@ -6,7 +6,7 @@ from iso8601 import parse_date as d
 import numpy as np
 import pandas as pd
 
-import hts
+import pd2hts
 
 
 tenmin_test_timeseries = textwrap.dedent("""\
@@ -282,7 +282,7 @@ tenmin_test_timeseries_file_no_precision = textwrap.dedent("""\
             """)
 
 
-class HtsTestCase(TestCase):
+class Pd2htsTestCase(TestCase):
 
     def setUp(self):
         self.reference_ts = pd.read_csv(
@@ -309,7 +309,7 @@ class HtsTestCase(TestCase):
     def test_write_empty(self):
         ts = pd.Series()
         s = StringIO()
-        hts.write(ts, s)
+        pd2hts.write(ts, s)
         self.assertEqual(s.getvalue(), '')
 
     def test_write(self):
@@ -322,7 +322,7 @@ class HtsTestCase(TestCase):
         ts = pd.DataFrame(data[:, [1, 2]], index=data[:, 0],
                           columns=('value', 'flags'))
         s = StringIO()
-        hts.write(ts, s)
+        pd2hts.write(ts, s)
         self.assertEqual(s.getvalue(), textwrap.dedent("""\
             2005-08-23 18:53,93,\r
             2005-08-24 19:52,108.7,\r
@@ -333,29 +333,29 @@ class HtsTestCase(TestCase):
 
     def test_write_file(self):
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=2)
+        pd2hts.write_file(self.reference_ts, outstring, version=2)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_version_2)
 
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=3)
+        pd2hts.write_file(self.reference_ts, outstring, version=3)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_version_3)
 
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=4)
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_version_4)
 
     def test_read_empty(self):
         s = StringIO()
-        apd = hts.read(s)
+        apd = pd2hts.read(s)
         self.assertEqual(len(apd), 0)
 
     def test_read(self):
         s = StringIO(tenmin_test_timeseries)
         s.seek(0)
-        apd = hts.read(s)
+        apd = pd2hts.read(s)
         self.assertEqual(len(apd), 22)
         np.testing.assert_array_equal(
             apd.index, pd.date_range('2008-02-07 09:40',
@@ -390,7 +390,7 @@ class HtsTestCase(TestCase):
     def test_read_file(self):
         s = StringIO(tenmin_test_timeseries_file_version_4)
         s.seek(0)
-        apd = hts.read_file(s)
+        apd = pd2hts.read_file(s)
 
         # Check metadata
         self.assertEqual(apd.unit, '°C')
@@ -452,28 +452,28 @@ class HtsTestCase(TestCase):
         # Try with altitude None
         self.reference_ts.location['altitude'] = None
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=4)
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_altitude)
 
         # Try without altitude at all
         del self.reference_ts.location['altitude']
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=4)
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_altitude)
 
         # Try with location None
         self.reference_ts.location = None
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=4)
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_location)
 
         # Try with no location at all
         delattr(self.reference_ts, 'location')
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=4)
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_location)
 
@@ -483,13 +483,13 @@ class HtsTestCase(TestCase):
         # Try with precision None
         self.reference_ts.precision = None
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=4)
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_precision)
 
         # Try with no precision at all
         delattr(self.reference_ts, 'precision')
         outstring = StringIO()
-        hts.write_file(self.reference_ts, outstring, version=4)
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_precision)

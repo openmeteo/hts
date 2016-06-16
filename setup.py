@@ -4,13 +4,14 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name="hts",
+    name="pd2hts",
     version="DEV",
     license="GPL3",
-    description="Read file in reverse order",
+    description=("Read and write Pandas objects from/to Hydrognomon "
+                 "timeseries files"),
     author="Antonis Christofides",
     author_email="antonis@antonischristofides.com",
-    url="https://github.com/openmeteo/hts",
+    url="https://github.com/openmeteo/pd2hts",
     packages=find_packages(),
     install_requires=['pandas>=0.14'],
     test_suite="tests",
