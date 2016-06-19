@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="pd2hts",
-    version="DEV",
+    version="0.1.0",
     license="GPL3",
     description=("Read and write Pandas objects from/to Hydrognomon "
                  "timeseries files"),
