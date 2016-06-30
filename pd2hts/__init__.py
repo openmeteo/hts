@@ -38,17 +38,13 @@ def write(df, f):
         return
     float_format = '%f'
     if hasattr(df, 'precision') and df.precision is not None:
-        if df.precision > 0:
+        if df.precision >= 0:
             float_format = '%.{}f'.format(df.precision)
         else:
-            float_format = '%d'
+            float_format = '%.0f'
             datacol = df.columns[0]
             m = 10 ** (-df.precision)
-            df[datacol] = np.where(df[datacol] < 0,
-                                   ((df[datacol] - (m / 2)) / m
-                                    ).astype('int') * m,
-                                   ((df[datacol] + (m / 2)) / m
-                                    ).astype('int') * m)
+            df[datacol] = np.rint(df[datacol] / m) * m
     df.to_csv(f, float_format=float_format, header=False, mode='wb',
               line_terminator='\r\n', date_format='%Y-%m-%d %H:%M')
 
