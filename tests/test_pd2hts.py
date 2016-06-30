@@ -281,6 +281,91 @@ tenmin_test_timeseries_file_no_precision = textwrap.dedent("""\
             2008-02-07 13:10,12.310000,\r
             """)
 
+tenmin_test_timeseries_file_zero_precision = textwrap.dedent("""\
+            Unit=°C\r
+            Count=22\r
+            Title=A test 10-min time series\r
+            Comment=This timeseries is extremely important\r
+            Comment=because the comment that describes it\r
+            Comment=spans five lines.\r
+            Comment=\r
+            Comment=These five lines form two paragraphs.\r
+            Timezone=EET (UTC+0200)\r
+            Time_step=10,0\r
+            Timestamp_rounding=0,0\r
+            Timestamp_offset=0,0\r
+            Variable=temperature\r
+            Precision=0\r
+            Location=24.678900 38.123450 4326\r
+            Altitude=219.22\r
+            \r
+            2008-02-07 09:40,10,\r
+            2008-02-07 09:50,10,\r
+            2008-02-07 10:00,11,\r
+            2008-02-07 10:10,11,\r
+            2008-02-07 10:20,11,\r
+            2008-02-07 10:30,11,\r
+            2008-02-07 10:40,11,\r
+            2008-02-07 10:50,11,\r
+            2008-02-07 11:00,11,\r
+            2008-02-07 11:10,11,\r
+            2008-02-07 11:20,11,\r
+            2008-02-07 11:30,11,MISS\r
+            2008-02-07 11:40,12,\r
+            2008-02-07 11:50,12,\r
+            2008-02-07 12:00,12,\r
+            2008-02-07 12:10,12,\r
+            2008-02-07 12:20,12,\r
+            2008-02-07 12:30,12,\r
+            2008-02-07 12:40,12,\r
+            2008-02-07 12:50,12,\r
+            2008-02-07 13:00,12,\r
+            2008-02-07 13:10,12,\r
+            """)
+
+
+tenmin_test_timeseries_file_negative_precision = textwrap.dedent("""\
+            Unit=°C\r
+            Count=22\r
+            Title=A test 10-min time series\r
+            Comment=This timeseries is extremely important\r
+            Comment=because the comment that describes it\r
+            Comment=spans five lines.\r
+            Comment=\r
+            Comment=These five lines form two paragraphs.\r
+            Timezone=EET (UTC+0200)\r
+            Time_step=10,0\r
+            Timestamp_rounding=0,0\r
+            Timestamp_offset=0,0\r
+            Variable=temperature\r
+            Precision=-1\r
+            Location=24.678900 38.123450 4326\r
+            Altitude=219.22\r
+            \r
+            2008-02-07 09:40,10,\r
+            2008-02-07 09:50,10,\r
+            2008-02-07 10:00,10,\r
+            2008-02-07 10:10,10,\r
+            2008-02-07 10:20,10,\r
+            2008-02-07 10:30,10,\r
+            2008-02-07 10:40,10,\r
+            2008-02-07 10:50,10,\r
+            2008-02-07 11:00,10,\r
+            2008-02-07 11:10,10,\r
+            2008-02-07 11:20,10,\r
+            2008-02-07 11:30,10,MISS\r
+            2008-02-07 11:40,10,\r
+            2008-02-07 11:50,10,\r
+            2008-02-07 12:00,10,\r
+            2008-02-07 12:10,10,\r
+            2008-02-07 12:20,10,\r
+            2008-02-07 12:30,10,\r
+            2008-02-07 12:40,10,\r
+            2008-02-07 12:50,10,\r
+            2008-02-07 13:00,10,\r
+            2008-02-07 13:10,10,\r
+            """)
+
 
 class Pd2htsTestCase(TestCase):
 
@@ -477,8 +562,8 @@ class Pd2htsTestCase(TestCase):
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_location)
 
-    def test_no_precision(self):
-        """Test that all works correclty whenever precision is missing."""
+    def test_precision(self):
+        """Test that all works correctly whenever precision is missing."""
 
         # Try with precision None
         self.reference_ts.precision = None
@@ -493,3 +578,17 @@ class Pd2htsTestCase(TestCase):
         pd2hts.write_file(self.reference_ts, outstring, version=4)
         self.assertEqual(outstring.getvalue(),
                          tenmin_test_timeseries_file_no_precision)
+
+        # Try with zero precision
+        self.reference_ts.precision = 0
+        outstring = StringIO()
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_zero_precision)
+
+        # Try with negative precision
+        self.reference_ts.precision = -1
+        outstring = StringIO()
+        pd2hts.write_file(self.reference_ts, outstring, version=4)
+        self.assertEqual(outstring.getvalue(),
+                         tenmin_test_timeseries_file_negative_precision)

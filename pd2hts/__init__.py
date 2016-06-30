@@ -1,5 +1,6 @@
 from configparser import ParsingError
 
+import numpy as np
 import pandas as pd
 
 
@@ -36,8 +37,18 @@ def write(df, f):
     if df.empty:
         return
     float_format = '%f'
-    if hasattr(df, 'precision') and df.precision:
-        float_format = '%.{}f'.format(df.precision)
+    if hasattr(df, 'precision') and df.precision is not None:
+        if df.precision > 0:
+            float_format = '%.{}f'.format(df.precision)
+        else:
+            float_format = '%d'
+            datacol = df.columns[0]
+            m = 10 ** (-df.precision)
+            df[datacol] = np.where(df[datacol] < 0,
+                                   ((df[datacol] - (m / 2)) / m
+                                    ).astype('int') * m,
+                                   ((df[datacol] + (m / 2)) / m
+                                    ).astype('int') * m)
     df.to_csv(f, float_format=float_format, header=False, mode='wb',
               line_terminator='\r\n', date_format='%Y-%m-%d %H:%M')
 
@@ -195,7 +206,7 @@ class _WriteFile:
 
     def write_simple(self, parm):
         value = getattr(self.df, parm, None)
-        if value:
+        if value is not None:
             self.f.write('{}={}\r\n'.format(parm.capitalize(), value))
     write_unit = write_simple
     write_title = write_simple
