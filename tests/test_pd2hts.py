@@ -1,3 +1,4 @@
+from datetime import datetime
 from io import StringIO
 import textwrap
 from unittest import TestCase
@@ -468,6 +469,56 @@ class Pd2htsTestCase(TestCase):
             [1213.09, ''],
             [1217.10, ''],
             [1231.11, '']], dtype=object)
+        np.testing.assert_allclose(apd.values[:, 0].astype(float),
+                                   expected[:, 0].astype(float))
+        np.testing.assert_array_equal(apd.values[:, 1], expected[:, 1])
+
+    def test_read_partial(self):
+        # Try with start_date and end date
+        s = StringIO(tenmin_test_timeseries)
+        s.seek(0)
+        apd = pd2hts.read(s, start_date=datetime(2008, 2, 7, 10, 40),
+                          end_date=datetime(2008, 2, 7, 11, 5))
+        self.assertEqual(len(apd), 3)
+        np.testing.assert_array_equal(
+            apd.index, pd.date_range('2008-02-07 10:40',
+                                     periods=3, freq='10T'))
+        expected = np.array([
+            [1093.09, ''],
+            [1110.10, ''],
+            [1123.21, '']], dtype=object)
+        np.testing.assert_allclose(apd.values[:, 0].astype(float),
+                                   expected[:, 0].astype(float))
+        np.testing.assert_array_equal(apd.values[:, 1], expected[:, 1])
+
+        # Try with start_date only
+        s = StringIO(tenmin_test_timeseries)
+        s.seek(0)
+        apd = pd2hts.read(s, start_date=datetime(2008, 2, 7, 12, 55))
+        self.assertEqual(len(apd), 2)
+        np.testing.assert_array_equal(
+            apd.index, pd.date_range('2008-02-07 13:00',
+                                     periods=2, freq='10T'))
+        expected = np.array([
+            [1217.10, ''],
+            [1231.11, '']], dtype=object)
+        np.testing.assert_allclose(apd.values[:, 0].astype(float),
+                                   expected[:, 0].astype(float))
+        np.testing.assert_array_equal(apd.values[:, 1], expected[:, 1])
+
+        # Try with end_date only
+        s = StringIO(tenmin_test_timeseries)
+        s.seek(0)
+        apd = pd2hts.read(s, end_date=datetime(2008, 2, 7, 10, 10))
+        self.assertEqual(len(apd), 4)
+        np.testing.assert_array_equal(
+            apd.index, pd.date_range('2008-02-07 09:40',
+                                     periods=4, freq='10T'))
+        expected = np.array([
+            [1032.43, ''],
+            [1042.54, ''],
+            [1051.65, ''],
+            [1054.76, '']], dtype=object)
         np.testing.assert_allclose(apd.values[:, 0].astype(float),
                                    expected[:, 0].astype(float))
         np.testing.assert_array_equal(apd.values[:, 1], expected[:, 1])

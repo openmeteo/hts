@@ -1,7 +1,10 @@
 from configparser import ParsingError
+from datetime import datetime
+from io import SEEK_CUR, SEEK_END, SEEK_SET, UnsupportedOperation
 
 import numpy as np
 import pandas as pd
+from textbisect import text_bisect_left, text_bisect_right
 
 
 class BacktrackableFile(object):
@@ -26,11 +29,96 @@ class BacktrackableFile(object):
     def read(self, size=None):
         return self.fp.read() if size is None else self.fp.read(size)
 
+    def __getattr__(self, name):
+        return getattr(self.fp, name)
 
-def read(f):
-    return pd.read_csv(f, parse_dates=[0], names=('date', 'value', 'flags'),
+
+class FilePart(object):
+    """A wrapper that views only a subset of the wrapped filelike object.
+
+    When it is created, three mandatory parameters are passed: a filelike
+    object, startpos and endpos. This wrapper then acts as a filelike object of
+    size endpos+1-startpos, which views the part of the wrapped object between
+    startpos and endpos.
+    """
+
+    def __init__(self, stream, startpos, endpos):
+        self.startpos = startpos
+        self.endpos = endpos
+        self.stream = stream
+        if self.stream.tell() < self.startpos:
+            self.stream.seek(self.startpos)
+        if self.stream.tell() > self.endpos + 1:
+            self.stream.seek(0, SEEK_END)
+
+    def read(self, size=-1):
+        max_available_size = self.endpos + 1 - self.stream.tell()
+        size = min(size, max_available_size)
+        if size == -1:
+            size = max_available_size
+        return self.stream.read(size)
+
+    def readline(self, size=-1):
+        max_available_size = self.endpos + 1 - self.stream.tell()
+        size = min(size, max_available_size)
+        return self.stream.readline(size)
+
+    def seek(self, offset, whence=SEEK_SET):
+        if whence == SEEK_SET:
+            if offset < 0:
+                raise ValueError("negative seek position {}".format(offset))
+            targetpos = self.startpos + offset
+            if targetpos > self.endpos + 1:
+                targetpos = self.endpos + 1
+            self.stream.seek(targetpos)
+            # It might seem more reasonable to return targetpos -
+            # self.startpos, but we choose to do the same thing Python does in
+            # other cases; if you do f.seek(VERY_LARGE), it returns VERY_LARGE,
+            # even if it is larger than the size of the file.
+            return offset
+        elif whence == SEEK_CUR:
+            # Do nothing by simply calling the wrapped (which requires that
+            # offset be zero).
+            return self.stream.seek(offset, SEEK_CUR)
+        elif whence == SEEK_END:
+            if offset != 0:
+                return UnsupportedOperation(
+                    "can't do nonzero cur-relative seeks")
+            return self.stream.seek(self.endpos)
+        else:
+            assert(False)
+
+    def tell(self):
+        return self.stream.tell() - self.startpos
+
+    def __getattr__(self, name):
+        return getattr(self.stream, name)
+
+
+def _key(x):
+    return x.split(',')[0]
+
+
+def read(f, start_date=None, end_date=None):
+    # Determine start_date and end_date as ISO8601 strings
+    start_date = '0001-01-01 00:00' if start_date is None else start_date
+    end_date = '9999-12-31 00:00' if end_date is None else end_date
+    start_date = start_date.strftime('%Y-%m-%d %H:%M') \
+        if isinstance(start_date, datetime) else start_date
+    end_date = end_date.strftime('%Y-%m-%d %H:%M') \
+        if isinstance(end_date, datetime) else end_date
+
+    # Determine the subset of the file that is of interest
+    lo = f.tell()
+    endpos = text_bisect_right(f, end_date, lo=lo, key=_key) - 1
+    startpos = text_bisect_left(f, start_date, lo=lo, key=_key)
+    f2 = FilePart(f, startpos, endpos)
+
+    # Read it
+    return pd.read_csv(f2, parse_dates=[0], names=('date', 'value', 'flags'),
                        usecols=('date', 'value', 'flags'), index_col=0,
-                       header=None, converters={'flags': lambda x: x})
+                       header=None, converters={'flags': lambda x: x},
+                       dtype={'value': np.float64, 'flags': str})
 
 
 def write(df, f):

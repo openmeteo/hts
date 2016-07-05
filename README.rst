@@ -16,9 +16,12 @@ Reference
 
 ``pd2hts`` contains the following functions:
 
-* ``read(f)`` reads filelike object ``f`` that contains a time series in
-  text format, and returns a pandas DataFrame with date index, value,
-  and flags.
+* ``read(f, start_date=None, end_date=None)`` reads filelike object
+  ``f`` that contains a time series in text format, and returns a pandas
+  DataFrame with date index, value, and flags. There must be no newline
+  translation in ``f`` (open it with ``open(..., newline='\n')``. If
+  ``start_date`` and/or ``end_date`` are specified, it skips rows
+  outside the range.
 
 * ``read_file(f)`` reads filelike object ``f`` that contains a time
   series in file format, and returns a pandas DataFrame which also has

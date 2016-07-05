@@ -13,7 +13,9 @@ setup(
     author_email="antonis@antonischristofides.com",
     url="https://github.com/openmeteo/pd2hts",
     packages=find_packages(),
-    install_requires=['pandas>=0.14'],
+    install_requires=['pandas>=0.14',
+                      'textbisect'
+                      ],
     test_suite="tests",
     tests_require=['iso8601'],
 )
