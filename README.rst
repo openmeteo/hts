@@ -6,6 +6,20 @@ pd2hts - Read and write Pandas objects from/to Hydrognomon timeseries files
     :alt: Build button
     :target: https://travis-ci.org/aptiko/pd2hts
 
+.. image:: https://codecov.io/github/aptiko/pd2hts/coverage.svg?branch=master
+    :alt: Coverage
+    :target: https://codecov.io/gh/aptiko/pd2hts
+
+.. image:: https://img.shields.io/pypi/l/pd2hts.svg
+    :alt: License
+
+.. image:: https://img.shields.io/pypi/status/pd2hts.svg
+    :alt: Status
+
+.. image:: https://img.shields.io/pypi/v/pd2hts.svg
+    :alt: Latest version
+    :target: https://pypi.python.org/pypi/pd2hts
+
 Requirements
 ============
 
@@ -254,11 +268,7 @@ The parameters available are:
 License
 =======
 
-Written by Antonis Christofides.
-
-| Copyright (C) 2015-2011 National Technical University of Athens
-| Copyright (C) 2013-2014 TEI of Epirus
-| Copyright (C) 2016 Antonis Christofides
+| Copyright (C) 2014-2016 Antonis Christofides
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
