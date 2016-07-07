@@ -22,6 +22,6 @@ setup(
         "Development Status :: 4 - Beta",
         ("License :: OSI Approved :: GNU General Public License "
          "v3 or later (GPLv3+)"),
-         'Topic :: Scientific/Engineering",
+        "Topic :: Scientific/Engineering",
     ],
 )
