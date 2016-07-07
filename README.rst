@@ -2,13 +2,13 @@
 pd2hts - Read and write Pandas objects from/to Hydrognomon timeseries files
 ===========================================================================
 
-.. image:: https://travis-ci.org/aptiko/pd2hts.svg?branch=master
+.. image:: https://travis-ci.org/openmeteo/pd2hts.svg?branch=master
     :alt: Build button
-    :target: https://travis-ci.org/aptiko/pd2hts
+    :target: https://travis-ci.org/openmeteo/pd2hts
 
-.. image:: https://codecov.io/github/aptiko/pd2hts/coverage.svg?branch=master
+.. image:: https://codecov.io/github/openmeteo/pd2hts/coverage.svg?branch=master
     :alt: Coverage
-    :target: https://codecov.io/gh/aptiko/pd2hts
+    :target: https://codecov.io/gh/openmeteo/pd2hts
 
 .. image:: https://img.shields.io/pypi/l/pd2hts.svg
     :alt: License
