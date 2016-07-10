@@ -615,7 +615,7 @@ class Pd2htsTestCase(TestCase):
                          tenmin_test_timeseries_file_no_location)
 
     def test_precision(self):
-        """Test that all works correctly whenever precision is missing."""
+        """Test that all works correctly with different precisions"""
 
         # Try with precision None
         self.reference_ts.precision = None
