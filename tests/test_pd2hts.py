@@ -375,7 +375,8 @@ class Pd2htsTestCase(TestCase):
             StringIO(tenmin_test_timeseries), parse_dates=[0],
             usecols=['date', 'value', 'flags'], index_col=0, header=None,
             names=('date', 'value', 'flags'),
-            converters={'flags': lambda x: x}).asfreq('10T')
+            converters={'flags': lambda x: x},
+            dtype={'value': np.float64, 'flags': str}).asfreq('10T')
         self.reference_ts.timestamp_rounding = '0,0'
         self.reference_ts.timestamp_offset = '0,0'
         self.reference_ts.unit = '°C'
